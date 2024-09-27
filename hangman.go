@@ -11,7 +11,6 @@ import (
 
 const maxAttempts = 10
 
-
 func StartGame() {
 	word, err := getRandomWord("words/wordlist.txt")
 	if err != nil {
@@ -59,11 +58,13 @@ func StartGame() {
 				return
 			} else {
 				fmt.Println("Mauvais mot.")
-				errors += 2
+				errors += 4
 			}
+		} else if len(input) >= 2 && len(input) <= 15 {
+			fmt.Printf("Vous avez entré %d lettres, cela vous coûte %d essais.\n", len(input), len(input))
+			errors += len(input)
 		} else {
 			fmt.Println("Entrée non valide.")
-			continue
 		}
 
 		if isWordGuessed(word, lettersGuessed) {
@@ -223,6 +224,7 @@ func displayHangman(errors int) {
         `,
 	}
 
+	// Affiche le bonhomme en fonction du nombre d'erreurs
 	if errors < len(hangmanStages) {
 		fmt.Println(hangmanStages[errors])
 	}
