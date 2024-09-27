@@ -3,13 +3,13 @@ package game
 import "fmt"
 
 func clearScreen() {
-	// Efface l'écran (pour les systèmes Unix)
+
 	fmt.Print("\033[H\033[2J")
 }
 
 func DisplayMenu() {
 	for {
-		clearScreen() // Efface l'écran
+		clearScreen()
 		fmt.Println("╔══════════════════════════════════════╗")
 		fmt.Println("║            🎮 HANGMAN 2024 🎮        ║")
 		fmt.Println("╠══════════════════════════════════════╣")
@@ -24,9 +24,9 @@ func DisplayMenu() {
 
 		switch choice {
 		case 1:
-			StartGame() // Assurez-vous que cette fonction est définie
+			StartGame()
 		case 2:
-			DisplayRules() // Assurez-vous que cette fonction est définie
+			DisplayRules()
 		case 3:
 			fmt.Println("Merci d'avoir joué ! À bientôt.")
 			return
