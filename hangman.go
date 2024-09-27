@@ -11,6 +11,7 @@ import (
 
 const maxAttempts = 10
 
+// StartGame démarre le jeu
 func StartGame() {
 	word, err := getRandomWord("words/wordlist.txt")
 	if err != nil {
@@ -34,7 +35,8 @@ func StartGame() {
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(strings.ToLower(input))
 
-		if input == "\033" {
+		// Vérifie si l'utilisateur a appuyé sur 'ESC'
+		if input == "\033" { // ASCII pour ESC
 			fmt.Println("Retour au menu principal.")
 			return
 		}
@@ -76,6 +78,20 @@ func StartGame() {
 	fmt.Println("Vous avez perdu. Le mot était :", word)
 }
 
+func displayWordWithFirstLetterRevealed(word string, lettersGuessed map[string]bool) {
+	firstLetter := string(word[0]) //
+	lettersGuessed[firstLetter] = true
+	for _, letter := range word {
+		letterStr := string(letter)
+		if lettersGuessed[letterStr] {
+			fmt.Print(letterStr + "La 1er lettre du mot est %d du répertoire des mots mystéres")
+		} else {
+			fmt.Print("_")
+		}
+	}
+	fmt.Println()
+}
+
 func getRandomWord(filepath string) (string, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
@@ -93,6 +109,7 @@ func getRandomWord(filepath string) (string, error) {
 	return words[rand.Intn(len(words))], nil
 }
 
+// displayWordState affiche l'état du mot avec les lettres devinées
 func displayWordState(word string, lettersGuessed map[string]bool) {
 	for _, letter := range word {
 		if lettersGuessed[string(letter)] {
@@ -104,6 +121,7 @@ func displayWordState(word string, lettersGuessed map[string]bool) {
 	fmt.Println()
 }
 
+// isWordGuessed vérifie si le mot a été deviné
 func isWordGuessed(word string, lettersGuessed map[string]bool) bool {
 	for _, letter := range word {
 		if !lettersGuessed[string(letter)] {
@@ -113,6 +131,7 @@ func isWordGuessed(word string, lettersGuessed map[string]bool) bool {
 	return true
 }
 
+// getGuessedLetters retourne les lettres déjà devinées
 func getGuessedLetters(lettersGuessed map[string]bool) string {
 	guessedLetters := []string{}
 	for letter := range lettersGuessed {
@@ -131,7 +150,7 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 0 erreurs
 		`
           -----
           |   
@@ -140,34 +159,34 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `,
-		`
-          -----
-          |   |
-          |   
-          |   
-          |  
-          |
-        - - - - - - - - - - - - - - - 
-        `,
+        `, // 1 erreur
 		`
           -----
           |   |
-          |   O
-          |  
+          |   
+          |   
           |  
           |
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 2 erreurs
 		`
           -----
           |   |
           |   O
+          |  
+          |  
+          |
+        - - - - - - - - - - - - - - - 
+        `, // 3 erreurs
+		`
+          -----
+          |   |
+          |   O
           |   |
           |  
           |
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 4 erreurs
 		`
           -----
           |   |
@@ -176,7 +195,7 @@ func displayHangman(errors int) {
           |   
           |
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 5 erreurs
 		`
           -----
           |   |
@@ -185,7 +204,7 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 6 erreurs
 		`
           -----
           |   |
@@ -194,7 +213,7 @@ func displayHangman(errors int) {
           |  / 
           |   
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 7 erreurs
 		`
           -----
           |   |
@@ -203,7 +222,7 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 8 erreurs
 		`
           -----
           |   |
@@ -212,7 +231,7 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 9 erreurs
 		`
           -----
           |   |
@@ -221,7 +240,7 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `,
+        `, // 10 erreurs
 	}
 
 	// Affiche le bonhomme en fonction du nombre d'erreurs
