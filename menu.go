@@ -1,32 +1,37 @@
-package gogame
+package game
 
 import "fmt"
 
-func DisplayMainMenu(selectedOption int) {
-    clearScreen()
-    fmt.Println("╔══════════════════════════════════════╗")
-    fmt.Println("║            🎮 HANGMAN 2024 🎮          ║")
-    fmt.Println("╠══════════════════════════════════════╣")
-
-    options := []string{
-        "Commencer une nouvelle partie",
-        "Règles du jeu",
-        "Quitter",
-    }
-
-    for i, option := range options {
-        if i == selectedOption {
-            fmt.Printf("║ ➤ %s %s\n", option, "⬅")
-        } else {
-            fmt.Printf("║   %s\n", option)
-        }
-    }
-
-    fmt.Println("╚══════════════════════════════════════╝")
-    fmt.Println("Utilisez les flèches pour naviguer, 'q' pour quitter.")
+func clearScreen() {
+	// Efface l'écran (pour les systèmes Unix)
+	fmt.Print("\033[H\033[2J")
 }
 
-// clearScreen efface l'écran (pour un rendu plus propre lors du rafraîchissement)
-func clearScreen() {
-    fmt.Print("\033[H\033[2J")
+func DisplayMenu() {
+	for {
+		clearScreen() // Efface l'écran
+		fmt.Println("╔══════════════════════════════════════╗")
+		fmt.Println("║            🎮 HANGMAN 2024 🎮        ║")
+		fmt.Println("╠══════════════════════════════════════╣")
+		fmt.Println("║ 1. Commencer une nouvelle partie     ║")
+		fmt.Println("║ 2. Règles du jeu                     ║")
+		fmt.Println("║ 3. Quitter                           ║")
+		fmt.Println("╚══════════════════════════════════════╝")
+		fmt.Print("Sélectionnez une option (1-3) : ")
+
+		var choice int
+		fmt.Scanln(&choice)
+
+		switch choice {
+		case 1:
+			StartGame() // Assurez-vous que cette fonction est définie
+		case 2:
+			DisplayRules() // Assurez-vous que cette fonction est définie
+		case 3:
+			fmt.Println("Merci d'avoir joué ! À bientôt.")
+			return
+		default:
+			fmt.Println("Choix invalide. Veuillez sélectionner une option valide.")
+		}
+	}
 }
