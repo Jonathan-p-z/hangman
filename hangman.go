@@ -58,7 +58,7 @@ func StartGame() {
 				return
 			} else {
 				fmt.Println("Mauvais mot.")
-				errors += 4
+				errors += 2
 			}
 		} else if len(input) >= 2 && len(input) <= 15 {
 			fmt.Printf("Vous avez entré %d lettres, cela vous coûte %d essais.\n", len(input), len(input))
