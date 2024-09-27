@@ -11,7 +11,7 @@ import (
 
 const maxAttempts = 10
 
-// StartGame démarre le jeu
+
 func StartGame() {
 	word, err := getRandomWord("words/wordlist.txt")
 	if err != nil {
@@ -35,13 +35,12 @@ func StartGame() {
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(strings.ToLower(input))
 
-		// Vérifie si l'utilisateur a appuyé sur 'ESC'
-		if input == "\033" { // ASCII pour ESC
+		if input == "\033" {
 			fmt.Println("Retour au menu principal.")
 			return
 		}
 
-		if len(input) == 1 { // Proposition d'une lettre
+		if len(input) == 1 {
 			if _, exists := lettersGuessed[input]; exists {
 				fmt.Println("Vous avez déjà proposé cette lettre.")
 				continue
@@ -54,17 +53,17 @@ func StartGame() {
 				fmt.Println("Mauvaise lettre.")
 				errors++
 			}
-		} else if len(input) == len(word) { // Proposition d'un mot
+		} else if len(input) == len(word) {
 			if input == word {
 				fmt.Println("Félicitations, vous avez trouvé le mot :", word)
 				return
 			} else {
 				fmt.Println("Mauvais mot.")
-				errors += 2 // Pénalité pour mauvaise proposition
+				errors += 2
 			}
 		} else {
 			fmt.Println("Entrée non valide.")
-			continue // Ne pas afficher le pendu si l'entrée est invalide
+			continue
 		}
 
 		if isWordGuessed(word, lettersGuessed) {
@@ -76,7 +75,6 @@ func StartGame() {
 	fmt.Println("Vous avez perdu. Le mot était :", word)
 }
 
-// getRandomWord charge un mot aléatoire depuis le fichier
 func getRandomWord(filepath string) (string, error) {
 	file, err := os.Open(filepath)
 	if err != nil {
@@ -94,7 +92,6 @@ func getRandomWord(filepath string) (string, error) {
 	return words[rand.Intn(len(words))], nil
 }
 
-// displayWordState affiche l'état du mot avec les lettres devinées
 func displayWordState(word string, lettersGuessed map[string]bool) {
 	for _, letter := range word {
 		if lettersGuessed[string(letter)] {
@@ -106,7 +103,6 @@ func displayWordState(word string, lettersGuessed map[string]bool) {
 	fmt.Println()
 }
 
-// isWordGuessed vérifie si le mot a été deviné
 func isWordGuessed(word string, lettersGuessed map[string]bool) bool {
 	for _, letter := range word {
 		if !lettersGuessed[string(letter)] {
@@ -116,7 +112,6 @@ func isWordGuessed(word string, lettersGuessed map[string]bool) bool {
 	return true
 }
 
-// getGuessedLetters retourne les lettres déjà devinées
 func getGuessedLetters(lettersGuessed map[string]bool) string {
 	guessedLetters := []string{}
 	for letter := range lettersGuessed {
@@ -125,8 +120,6 @@ func getGuessedLetters(lettersGuessed map[string]bool) string {
 	return strings.Join(guessedLetters, ", ")
 }
 
-// displayHangman dessine le bonhomme du pendu en fonction des erreurs
-// displayHangman dessine le bonhomme du pendu en fonction des erreurs
 func displayHangman(errors int) {
 	hangmanStages := []string{
 		`
@@ -137,7 +130,7 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `, // 0 erreurs
+        `,
 		`
           -----
           |   
@@ -146,34 +139,34 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `, // 1 erreur
-		`
-          -----
-          |   |
-          |   
-          |   
-          |  
-          |
-        - - - - - - - - - - - - - - - 
-        `, // 2 erreurs
+        `,
 		`
           -----
           |   |
-          |   O
-          |  
+          |   
+          |   
           |  
           |
         - - - - - - - - - - - - - - - 
-        `, // 3 erreurs
+        `,
 		`
           -----
           |   |
           |   O
+          |  
+          |  
+          |
+        - - - - - - - - - - - - - - - 
+        `,
+		`
+          -----
+          |   |
+          |   O
           |   |
           |  
           |
         - - - - - - - - - - - - - - - 
-        `, // 4 erreurs
+        `,
 		`
           -----
           |   |
@@ -182,7 +175,7 @@ func displayHangman(errors int) {
           |   
           |
         - - - - - - - - - - - - - - - 
-        `, // 5 erreurs
+        `,
 		`
           -----
           |   |
@@ -191,7 +184,7 @@ func displayHangman(errors int) {
           |  
           |
         - - - - - - - - - - - - - - - 
-        `, // 6 erreurs
+        `,
 		`
           -----
           |   |
@@ -200,7 +193,7 @@ func displayHangman(errors int) {
           |  / 
           |   
         - - - - - - - - - - - - - - - 
-        `, // 7 erreurs
+        `,
 		`
           -----
           |   |
@@ -209,7 +202,7 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `, // 8 erreurs
+        `,
 		`
           -----
           |   |
@@ -218,7 +211,7 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `, // 9 erreurs
+        `,
 		`
           -----
           |   |
@@ -227,10 +220,9 @@ func displayHangman(errors int) {
           |  / \
           |  
         - - - - - - - - - - - - - - - 
-        `, // 10 erreurs
+        `,
 	}
 
-	// Affiche le bonhomme en fonction du nombre d'erreurs
 	if errors < len(hangmanStages) {
 		fmt.Println(hangmanStages[errors])
 	}
